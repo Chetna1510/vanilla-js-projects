@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CSS variable with js</title>
+	<style>
+
+	/* Define variables at the root level so their scope is the entire document */
+    :root {
+      --base: goldenrod;
+      --blur: 2px;
+      --spacing: 10px;
+    }
+
+    /* Set image property values using previously defined variables
+	The filter property defines visual effects (like blur and saturation) to an element (often <img>). */
+    img {
+      box-sizing: border-box;
+      background: var(--base);
+      filter: blur(var(--blur)); 
+      padding: var(--spacing);
+      border-radius: 2rem;
+      height: 400px;
+      width: 50%;
+    }
+
+    /* 'JS' text color that will match the image background color */
+    .hl {
+      color: var(--base);
+    }
+
+	body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    input {
+      width: 100px;
+    }
+	</style>
+</head>
+<body>
+	<h2>Update CSS VAriables with <span class="hl">JS</span></h2>
+
+	<div class="controls">
+		<label for="spacing">Spacing:</label>
+		<input type="range" name="spacing" id="" min="0" max="300" value="10" data-sizing="px">
+		<br>
+		<label for="blur">Blur:</label>
+		<input type="range" name="blur" min="0" max="50" value="10" data-sizing="px">
+		<br>
+		<label for="base">Base Color</label>
+		<input type="color" name="base" value="#ffc600">
+	
+	</div>
+	<img src="img.jpg">
+  <script>
+    const inputs = document.querySelectorAll('.controls input');
+    //dataset is an object that contains all data attributes from that specific elements. here, it contains sizing:"px"
+    function handleUpdate(){
+      const suffix = this.dataset.sizing || '';
+      //update CSS variables
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+
+    // Attach event listeners to each input
+    //When input value is changed, call handleUpdate function
+    inputs.forEach(input => 
+      input.addEventListener('change', handleUpdate) 
+    );
+    //mousemove event is fired when mouse is moved
+    inputs.forEach(input => 
+      input.addEventListener('mousemove', handleUpdate) 
+    );
+  </script>
+</body>
+</html>
